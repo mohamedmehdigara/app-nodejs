@@ -1,6 +1,26 @@
 // TODO: Import the neo4j-driver dependency
 // Import the neo4j dependency from neo4j-driver
-import neo4j from 'neo4j-driver'
+import neo4j, { session } from 'neo4j-driver'
+
+const session = driver.session({
+  // Run sessions in WRITE mode by default
+  defaultAccessMode: session.WRITE,
+  // Run all queries against the `people` database
+  database: 'people',
+})
+
+
+// Run a query within a Read Transaction
+const res = await session.executeRead(tx => {
+  return tx.run(
+    `MATCH (p:Person)-[:ACTED_IN]->(m:Movie)
+    WHERE m.title = $title // (1)
+    RETURN p.name AS name
+    LIMIT 10`,
+    { title: 'Arthur' } // (2)
+  )
+})
+
 /**
  * A singleton instance of the Neo4j Driver to be used across the app
  *
