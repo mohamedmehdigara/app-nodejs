@@ -4,6 +4,7 @@
 import { config } from 'dotenv'
 import { closeDriver, getDriver, initDriver } from '../../src/neo4j'
 import MovieService from '../../src/services/movie.service'
+jest.useFakeTimers()
 
 describe('02. Movie Lists', () => {
   beforeAll(async () => {
